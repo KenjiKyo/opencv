@@ -109,7 +109,7 @@ public:
                           Size maxSize = Size(),
                           bool outputRejectLevels = false );
 
-
+    double classify(InputArray image, double &weight);
     bool isOldFormatCascade() const;
     Size getOriginalWindowSize() const;
     int getFeatureType() const;
