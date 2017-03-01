@@ -323,7 +323,7 @@ public:
                                   Size minSize = Size(),
                                   Size maxSize = Size(),
                                   bool outputRejectLevels = false );
-
+    CV_WRAP double classify(InputArray image, double&weight);
     CV_WRAP bool isOldFormatCascade() const;
     CV_WRAP Size getOriginalWindowSize() const;
     CV_WRAP int getFeatureType() const;
