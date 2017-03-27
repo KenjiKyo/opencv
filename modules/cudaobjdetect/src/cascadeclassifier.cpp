@@ -82,6 +82,8 @@ namespace
         virtual void setMaxNumObjects(int maxNumObjects) { maxNumObjects_ = maxNumObjects; }
         virtual int getMaxNumObjects() const { return maxNumObjects_; }
 
+        virtual double classify(InputArray image, double& weight);
+
     protected:
         Size maxObjectSize_;
         Size minObjectSize_;
@@ -99,6 +101,37 @@ namespace
         findLargestObject_(false),
         maxNumObjects_(100)
     {
+    }
+
+
+    double CascadeClassifierBase::classify(InputArray image, double& weight)
+    {
+        double confidence = -1;
+        Ptr<FeatureEvaluator> evaluator = featureEvaluator->clone();
+        Size newSize = setMaxObjectSize();
+        cv::cuda::Mat dst, grayImage;
+        cv::cuda::resize(image, dst, newSize);
+
+        if (dst.channels() > 1)
+            cv::cuda::cvtColor(dst, grayImage, COLOR_BGR2GRAY);
+        else
+            dst.copyTo(grayImage);
+
+        if (!evaluator->setImage(grayImage, std::vector<float>(1, 1.0))) {
+            return -1;
+        }
+        int result = runAt(evaluator, Point(0, 0), 0, weight);
+
+
+        if (result != 1) {
+            double numberStages = data.stages.size();
+            double currentStage = -result;
+            confidence = currentStage / numberStages;
+        }
+        else
+            confidence = (double)result;
+
+        return confidence;
     }
 }
 
