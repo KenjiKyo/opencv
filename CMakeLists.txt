@@ -14,6 +14,7 @@ FATAL: In-source builds are not allowed.
 ")
 endif()
 
+add_definitions(-D_USE_MATH_DEFINES)
 
 include(cmake/OpenCVMinDepVersions.cmake)
 
