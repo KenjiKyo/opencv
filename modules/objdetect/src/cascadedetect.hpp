@@ -109,7 +109,7 @@ public:
                           Size maxSize = Size(),
                           bool outputRejectLevels = false ) CV_OVERRIDE;
 
-    double classify(InputArray image, double& weight) CV_OVERRIDE;
+    double classify(InputArray image, double& weight);
     bool isOldFormatCascade() const CV_OVERRIDE;
     Size getOriginalWindowSize() const CV_OVERRIDE;
     int getFeatureType() const CV_OVERRIDE;
